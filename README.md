@@ -108,6 +108,7 @@ The final synchronization and network rewiring hook.
 * **Action:** Restores the proxy state back to `STATE_NORMAL` while targeting a new destination host. It establishes a brand-new outbound TCP socket connection to Target Server B. Once the tunnel handshake succeeds, it sequentially flushes the memory cache down into Server B's ingress stream before letting fresh client data pass through directly. This guarantees absolute zero-loss stream continuity.
 
 ---
+* **Features which can be added:** Sqlite and a decent cli interface using bubbletea
 
 ## CLI Execution & Telemetry Logs
 
