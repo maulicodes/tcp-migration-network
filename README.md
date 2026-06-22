@@ -4,6 +4,31 @@ A headless, state-driven TCP proxy engine in Go designed for zero-downtime conta
 
 ---
 
+## System Architecture
+
+The core proxy operates as a concurrent state machine that dynamically routes live client traffic, switching to a thread-safe channel buffer during runtime container handoffs to prevent active connection dropping.
+
+![TCP Migration Network Architecture](tcp-migration-network.png)
+
+---
+
+## Control Plane API Verification
+
+The network orchestration layer can be verified sequentially across the active runtime container control plane hooks:
+
+![Terminal Workflow](tcpmigrationterm.jpeg)
+
+### 1. Status Polling (`GET /poll`)
+Checks the active status state machine, monitoring for normal or transient conditions along with active ring-buffer byte counters:
+```bash
+curl -X GET http://localhost:8080/poll
+# Response: {"current_state": "Normal", "buffered_bytes": 0}
+# tcp-migration-network
+
+A headless, state-driven TCP proxy engine in Go designed for zero-downtime container migration. Features robust memory ring-buffering to prevent transient data loss, strict concurrency controls (`sync.Mutex`), and an automated orchestration control plane (`/import`, `/export`, `/poll`) for seamless live backend hot-swapping.
+
+---
+
 ## Concurrent TCP Proxy Migration Engine
 
 This system is a high-performance, concurrent infrastructure utility engineered in Go to handle seamless live backend handoffs—such as container checkpoint/restore operations using CRIU (Checkpoint/Restore in Userspace)—without edge socket disruption or client-side connection drops.
